@@ -1,0 +1,107 @@
+
+public class Solution {
+
+	public static int lcs(String s, String t) {
+		//Your code goes here
+   // memoization approach
+
+
+		int[][]dp=new int[s.length()+1][t.length()+1];
+		for(int i=0; i<dp.length; i++){
+			for(int j=0; j<dp[i].length; j++){
+				dp[i][j]=-1;                              // length can be never negative thats 
+			}
+		}
+      return Helper(s,t,0,0,dp);
+    }
+
+	public static int Helper(String s,String t,int i,int j,int[][]dp){
+    if(i==s.length() || j==t.length()){
+		return 0;
+	}
+	int myAns;
+  if(s.charAt(i)==t.charAt(j)){
+	 int  smallAns;
+	 if(dp[i+1][j+1]==-1){
+	smallAns= Helper(s, t, i+1, j+1,dp);
+	dp[i+1][j+1]=smallAns;
+	 }
+	 else{
+       smallAns=dp[i+1][j+1];
+	 }
+	 myAns=1+smallAns;
+  }
+
+  else{
+	  int excludeith;                           
+	  if(dp[i+1][j]==-1){
+        excludeith=Helper(s, t, i+1, j, dp);   // exclude ith character
+		dp[i+1][j]=excludeith;
+	  }
+	  else{
+		  excludeith=dp[i+1][j];
+	  }
+	  int excludejth;
+	  if(dp[i][j+1]==-1){
+    excludejth=Helper(s, t, i, j+1, dp);    // exclude jth character
+	dp[i][j+1]=excludejth;
+	  }
+	  else{
+		  excludejth=dp[i][j+1];
+	  }
+
+	   myAns=Math.max(excludeith, excludejth);
+  }
+
+ return myAns;
+	}
+}
+
+
+
+// Iterative Way or tabulation method or bottom up approach
+
+
+
+
+public class Solution {
+
+	public static int lcs(String s, String t) {
+   
+        int m=s.length();
+		int n=t.length();
+		int[][]dp=new int[s.length()+1][t.length()+1];
+		for(int i=0; i<dp.length; i++){
+			for(int j=0; j<dp[i].length; j++){
+				dp[i][j]=0;                              // length can be never negative thats 
+			}
+		}
+
+		for(int i=m-1; i>=0; i--){
+			for(int j=n-1; j>=0; j--){
+
+				// if (i == m-1 || j == n-1) {
+				// 	 dp[i][j]=1;
+		        // 	}
+			if(s.charAt(i)==t.charAt(j)){
+				dp[i][j]=1+dp[i+1][j+1];
+			}
+			else{
+				int ans1=dp[i+1][j];   
+				int ans2=dp[i][j+1];
+				dp[i][j]=Math.max(ans1,ans2);
+			}	
+			}
+		}
+		return dp[0][0];
+
+	}
+    }
+
+
+
+
+
+
+
+

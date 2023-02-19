@@ -1,0 +1,147 @@
+// this is the recursive approach
+
+
+public class Solution {
+
+	public static int editDistance(String s, String t) {
+		
+		return Helper(s,t,0,0);
+    
+	}
+
+	public static int Helper(String s,String t,int i,int j){
+		if(i==s.length()){
+			return t.length()-j;
+		}
+		if(j==t.length()){
+			return s.length()-i;
+		}
+		int ans=0;
+		if(s.charAt(i)==t.charAt(j)){
+			return Helper(s,t,i+1,j+1);
+		}
+		else{
+			// insert
+			int insert=1+Helper(s, t, i, j+1);     // doubt why we not incerasing the both pointer
+			// replace
+			int replace=1+Helper(s,t,i+1,j+1);
+			// delete
+			int delete=1+Helper(s, t, i+1, j);
+			ans=Math.min(insert,Math.min(replace,delete));
+		}
+   return ans;
+
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// this is called the memoization approach
+
+
+
+	
+public class Solution {
+
+	public static int editDistance(String s, String t) {
+
+		//Your code goes here
+
+		int[] []dp = new int[s.length() + 1][t.length()+1];
+		for(int i=0; i<dp.length; i++){
+			for(int j=0; j<dp[i].length; j++){
+				dp[i][j]=-1;
+			}
+		}
+		return Helper(s,t,0,0,dp);
+    
+	}
+
+	public static int Helper(String s,String t,int i,int j,int [][]dp){
+		if(i==s.length()){
+			return t.length()-j;
+		}
+		if(j==t.length()){
+			return s.length()-i;
+		}
+		if(dp[i][j]!=-1){
+			return dp[i][j];    // this is called here memoization if ans already present then return the ans		
+		}
+		int ans=0;
+		if(s.charAt(i)==t.charAt(j)){
+			return Helper(s,t,i+1,j+1,dp);
+		}
+		else{
+			// insert
+			int insert=1+Helper(s, t, i, j+1,dp);     // doubt why we nt incerasing the both pointer
+			// replace
+			int replace=1+Helper(s,t,i+1,j+1,dp);
+			// delete
+			int delete=1+Helper(s, t, i+1, j,dp);
+			ans=Math.min(insert,Math.min(replace,delete));
+		}
+   return dp[i][j]=ans;
+
+	}
+}
+
+
+
+
+//this iterative or tabulation or bottom up approach
+
+
+
+
+public class Solution {
+
+
+	public static int editDistance(String s, String t) {
+		//Your code goes here
+
+		int[] []dp = new int[s.length() + 1][t.length()+1];
+		  int m=s.length();
+		  int n=t.length();
+
+		  for(int i=0; i<s.length(); i++){    // base case
+			  dp[i][t.length()]=s.length()-i;
+		  }
+		  for(int j=0; j<t.length(); j++){    // base case
+			  dp[s.length()][j]=t.length()-j;
+		  }
+		
+		for(int i=m-1; i>=0; i--){
+			for(int j=n-1; j>=0; j--){
+    	      int ans=0;
+          	if(s.charAt(i)==t.charAt(j)){
+			ans=dp[i+1][j+1];
+		}
+		else{
+			// insert
+			int insert=1+dp[i][j+1];    // doubt why we nt incerasing the both pointer
+			// replace
+			int replace=1+dp[i+1][j+1];
+			// delete
+			int delete=1+dp[i+1][j];
+			ans=Math.min(insert,Math.min(replace,delete));
+			
+		}
+		 dp[i][j]=ans;
+			}
+		}
+    return dp[0][0];
+       
+			}
+		}
+	
+
+

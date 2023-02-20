@@ -1,0 +1,94 @@
+// Recursive approach
+
+
+public class Solution {
+
+	
+	public static int countWaysToMakeChange(int denominations[], int value){
+        // Write your code here
+          int n=denominations.length;
+		  return Helper(n-1,value,denominations);
+
+		
+	}
+
+	public  static int Helper(int index,int target,int[]denominations){
+      // denomianation means day
+
+    if(index==0  && denominations[index]%2==1){
+		return 1;              
+	}
+	if(index==0 && denominations[index]%2==0){
+		return 0;
+	}
+	 
+	 int nontake=Helper(index-1,target,denominations);
+	 int take=0;
+	 if(denominations[index]<=target){
+		 take=Helper(index,target-denominations[index],denominations);
+	 }
+	 return take+nontake;
+
+	}
+	
+}
+
+
+
+
+// Memoization approach
+
+
+
+
+
+public class Solution {
+
+	
+	public static int countWaysToMakeChange(int denominations[], int value){
+        // Write your code here
+		int n = denominations.length;
+		int[][] dp=new int[n][value+1];
+           
+           for(int i=0; i<dp.length; i++){
+			for(int j=0; j<dp[i].length; j++){
+				dp[i][j]=-1;
+			}
+		   }
+
+        
+		  return Helper(n-1,value,denominations,dp);
+
+		
+	}
+
+	public  static int Helper(int index,int target,int[]denominations,int[][]dp){
+      // denomianation means day
+
+    if(index==0  && denominations[index]%2==1){
+		return 1;              
+	}
+	if(index==0 && denominations[index]%2==0){
+		return 0;
+	}
+	if(dp[index][target]!=-1){
+		return dp[index][target];
+	}
+	 
+	 int nontake=Helper(index-1,target,denominations,dp);
+	 int take=0;
+	 if(denominations[index]<=target){
+		 take=Helper(index,target-denominations[index],denominations,dp);
+	 }
+	 return dp[index][target]=take+nontake;
+
+	}
+	
+}
+
+
+
+
+
+
+
